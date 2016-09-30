@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var occupationLabel: UILabel!
     @IBOutlet weak var speciesLabel: UILabel!
     @IBOutlet weak var characterImageView: UIImageView!
+    @IBOutlet weak var nowFriendsLabel: UILabel!
+    @IBOutlet weak var firstFriend: UIImageView!
+    @IBOutlet weak var secondFriend: UIImageView!
     
     var finn: Character!
     var jake: Character!
@@ -21,9 +24,17 @@ class ViewController: UIViewController {
     var bmo: Character!
     var lemongrab: Character!
     var lsp: Character!
+    var currentPerson: Character!
+    var becomeFriendsWithTapped = false
     
+    @IBAction func becomeFriendsWithButtonTapped(_ sender: UIButton) {
+        
+        becomeFriendsWithTapped = true
+
+    }
     
     @IBAction func buttonTapped(_ sender: UIButton) {
+        if !becomeFriendsWithTapped {
         switch sender.titleLabel!.text! {
         case "Finn":
             updateViews(with: finn)
@@ -47,6 +58,30 @@ class ViewController: UIViewController {
             break
             
         }
+        } else {
+            switch sender.titleLabel!.text! {
+            case "Finn":
+                becomeFriends(friend: finn)
+                break
+            case "Jake":
+                becomeFriends(friend: jake)
+                break
+            case "Bubblegum":
+                becomeFriends(friend: bubblegum)
+                break
+            case "BMO":
+                becomeFriends(friend: bmo)
+                break
+            case "Lemongrab":
+                becomeFriends(friend: lemongrab)
+                break
+            case "LSP":
+                becomeFriends(friend: lsp)
+                break
+            default:
+                break
+            }
+        }
         
     }
     
@@ -63,6 +98,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         createAllCharacters()
+        nowFriendsLabel.isHidden = true
+        
     }
 
     func updateViews(with character: Character) {
@@ -70,7 +107,17 @@ class ViewController: UIViewController {
         occupationLabel.text = character.occupation
         speciesLabel.text = character.species
         characterImageView.image = character.displayImage()
+        currentPerson = character
         
+        
+    }
+    
+    func becomeFriends(friend character: Character) {
+        currentPerson.becomeBestFriends(with: character.name)
+        firstFriend.image = currentPerson.displayImage()
+        secondFriend.image = character.displayImage()
+        characterImageView.isHidden = true
+        nowFriendsLabel.isHidden = false
     }
    
 
